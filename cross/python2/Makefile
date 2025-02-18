@@ -7,7 +7,7 @@ PKG_DIST_SITE = https://www.python.org/ftp/python/$(PKG_VERS)
 PKG_DIR = Python-$(PKG_VERS)
 
 DEPENDS  = cross/zlib cross/openssl cross/sqlite cross/readline cross/ncursesw cross/bzip2
-DEPENDS += cross/berkeleydb-5.3 native/$(PKG_NAME)
+DEPENDS += cross/berkeleydb-5.3 native/python2
 
 HOMEPAGE = http://www.python.org
 COMMENT  = Python Programming Language
@@ -48,6 +48,8 @@ python_post_patch:
 python_pre_configure:
 	# Needed for cross-compilation of wheels
 	cp $(PYTHON_NATIVE) $(HOSTPYTHON)
+	# Need "typing" installed to build wheel of "twisted==20.3.0"
+	$(PIP_NATIVE) install "typing==3.7.4.1"
 	# Needed to apply patch-changes to configure.ac
 	$(RUN) autoreconf
 
